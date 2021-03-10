@@ -14,7 +14,6 @@ Although the UI is entirely done with Jetpack Compose I've focused on doing most
 
 I want to revisit this project later on to play a bit more with the animations.
 
-
 ## :camera_flash: Screenshots
 <!-- You can add more screenshots here if you like -->
 <img src="/results/screenshot_1.png" width="260">&emsp;<img src="/results/screenshot_2.png" width="260">
