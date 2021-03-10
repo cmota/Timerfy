@@ -33,7 +33,7 @@ fun MyTheme(window: Window, statusBarColor: Int, content: @Composable () -> Unit
 
     @Suppress("DEPRECATION")
     window.decorView.systemUiVisibility = window.decorView.systemUiVisibility or
-            View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
+        View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
 
     MaterialTheme(
         colors = LightColorPalette,

@@ -16,8 +16,11 @@
 package com.example.androiddevchallenge
 
 import android.annotation.SuppressLint
-import android.graphics.*
 import android.graphics.Paint
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffXfermode
+import android.graphics.Rect
+import android.graphics.Typeface
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.util.Log
@@ -25,32 +28,57 @@ import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.BottomSheetScaffold
+import androidx.compose.material.BottomSheetScaffoldState
+import androidx.compose.material.BottomSheetValue
+import androidx.compose.material.Card
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.FabPosition
+import androidx.compose.material.FloatingActionButton
+import androidx.compose.material.Icon
+import androidx.compose.material.Scaffold
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
+import androidx.compose.material.rememberBottomSheetScaffoldState
+import androidx.compose.material.rememberBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.*
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.drawscope.drawIntoCanvas
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
-import android.graphics.PorterDuff
-import androidx.compose.foundation.border
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.*
-import androidx.compose.material.Scaffold
-import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.nativeCanvas
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.integerArrayResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import com.example.androiddevchallenge.ui.theme.*
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import com.example.androiddevchallenge.ui.theme.MyTheme
+import com.example.androiddevchallenge.ui.theme.backgroundColor
+import com.example.androiddevchallenge.ui.theme.backgroundFillerColor
+import com.example.androiddevchallenge.ui.theme.backgroundFinishColor
+import com.example.androiddevchallenge.ui.theme.backgroundSelectedColor
+import com.example.androiddevchallenge.ui.theme.borderColor
+import com.example.androiddevchallenge.ui.theme.primaryColor
+import com.example.androiddevchallenge.ui.theme.textColor
+import com.example.androiddevchallenge.ui.theme.typography
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
 
@@ -92,7 +120,8 @@ class MainActivity : AppCompatActivity() {
                         AddTimer(selectTimer = bottomSheetScaffoldState)
                     },
 
-                    scaffoldState = bottomSheetScaffoldState, sheetPeekHeight = 0.dp) {
+                    scaffoldState = bottomSheetScaffoldState, sheetPeekHeight = 0.dp
+                ) {
 
                     Scaffold(
                         floatingActionButton = {
@@ -127,9 +156,11 @@ fun MyApp() {
             backgroundColor.toArgb()
         }
 
-        Canvas(modifier = Modifier
-            .fillMaxSize()
-            .background(Color.Transparent)) {
+        Canvas(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(Color.Transparent)
+        ) {
             val paint = Paint().apply {
                 isAntiAlias = true
                 textSize = 525f
@@ -145,8 +176,7 @@ fun MyApp() {
 
                 paint.xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_OUT)
                 paint.getTextBounds(text, 0, text.length, bounds)
-                canvas.nativeCanvas.drawText(text, size.width/2, size.height/2 - size.width/8, paint)
-
+                canvas.nativeCanvas.drawText(text, size.width / 2, size.height / 2 - size.width / 8, paint)
 
                 val topOffset = (size.height * elapsedTime.value) / selectedTime.value
                 Log.d(TAG, "size.height=${size.height} | progress=${elapsedTime.value} | offset=$topOffset")
@@ -161,10 +191,9 @@ fun MyApp() {
                 paint.xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC)
                 canvas.nativeCanvas.drawRect(0f, topOffset, size.width, size.height, paint)
 
-
                 paint.color = Color.White.toArgb()
                 paint.xfermode = PorterDuffXfermode(PorterDuff.Mode.SRC_IN)
-                canvas.nativeCanvas.drawText(text, size.width/2, size.height/2 - size.width/8, paint)
+                canvas.nativeCanvas.drawText(text, size.width / 2, size.height / 2 - size.width / 8, paint)
             }
         }
 
@@ -203,7 +232,8 @@ fun AddTopBar(selectTimer: BottomSheetScaffoldState) {
             .fillMaxWidth()
             .padding(top = 32.dp),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.Center) {
+        horizontalArrangement = Arrangement.Center
+    ) {
 
         Card(
             modifier = Modifier
@@ -220,7 +250,8 @@ fun AddTopBar(selectTimer: BottomSheetScaffoldState) {
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center) {
+                horizontalArrangement = Arrangement.Center
+            ) {
 
                 Text(
                     text = getFormattedTime(selectedTime.value),
@@ -229,7 +260,6 @@ fun AddTopBar(selectTimer: BottomSheetScaffoldState) {
                 )
             }
         }
-
     }
 }
 
@@ -238,9 +268,11 @@ fun AddTopBar(selectTimer: BottomSheetScaffoldState) {
 fun AddTimer(selectTimer: BottomSheetScaffoldState) {
     val times = integerArrayResource(id = R.array.timer)
 
-    LazyColumn(modifier = Modifier
-        .fillMaxWidth()
-        .background(backgroundColor)) {
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(backgroundColor)
+    ) {
 
         itemsIndexed(times.toList()) { _, item ->
             AddSection(value = item.toLong(), selectTimer = selectTimer)
@@ -252,13 +284,13 @@ fun AddTimer(selectTimer: BottomSheetScaffoldState) {
 @Composable
 fun AddSection(value: Long, selectTimer: BottomSheetScaffoldState) {
 
-    val backgroundColor = if(value == selectedTime.value) {
+    val backgroundColor = if (value == selectedTime.value) {
         backgroundSelectedColor
     } else {
         backgroundColor
     }
 
-    val textColor = if(value == selectedTime.value) {
+    val textColor = if (value == selectedTime.value) {
         backgroundFillerColor
     } else {
         textColor
@@ -278,7 +310,8 @@ fun AddSection(value: Long, selectTimer: BottomSheetScaffoldState) {
                 }
             },
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center) {
+        verticalArrangement = Arrangement.Center
+    ) {
 
         Text(
             text = getFormattedTime(value),
@@ -290,16 +323,18 @@ fun AddSection(value: Long, selectTimer: BottomSheetScaffoldState) {
 
 @Composable
 fun AddFloatingActionButton() {
-    FloatingActionButton(onClick = {
-        if (started.value) {
-            cancelTimer()
-        } else {
-            startTimer()
-        }
+    FloatingActionButton(
+        onClick = {
+            if (started.value) {
+                cancelTimer()
+            } else {
+                startTimer()
+            }
 
-        started.value = !started.value
-    }) {
-        val icon = if(started.value) {
+            started.value = !started.value
+        }
+    ) {
+        val icon = if (started.value) {
             painterResource(R.drawable.ic_pause)
         } else {
             painterResource(R.drawable.ic_play)
@@ -313,9 +348,9 @@ fun AddFloatingActionButton() {
     }
 }
 
-private fun getMinutes(time: Long) = (time/1000) / 60
+private fun getMinutes(time: Long) = (time / 1000) / 60
 
-private fun getSeconds(time: Long) = ((time/1000) % 60)
+private fun getSeconds(time: Long) = ((time / 1000) % 60)
 
 private fun getFormattedTime(time: Long): String {
     val minutes = getMinutes(time)
@@ -343,7 +378,7 @@ private fun startTimer() {
 }
 
 private fun cancelTimer() {
-    if(!started.value) {
+    if (!started.value) {
         return
     }
 
