@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer-array
+        name="timer">
+        <item>30000</item>  //0:30 min
+        <item>60000</item>  //1 min
+        <item>90000</item>  //1:30 min
+    </integer-array>
+</resources>

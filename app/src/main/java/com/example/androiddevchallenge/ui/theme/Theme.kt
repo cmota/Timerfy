@@ -15,43 +15,28 @@
  */
 package com.example.androiddevchallenge.ui.theme
 
-import androidx.compose.foundation.isSystemInDarkTheme
+import android.view.View
+import android.view.Window
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 
-private val DarkColorPalette = darkColors(
-    primary = purple200,
-    primaryVariant = purple700,
-    secondary = teal200
-)
-
 private val LightColorPalette = lightColors(
-    primary = purple500,
-    primaryVariant = purple700,
-    secondary = teal200
-
-        /* Other default colors to override
-    background = Color.White,
-    surface = Color.White,
-    onPrimary = Color.White,
-    onSecondary = Color.Black,
-    onBackground = Color.Black,
-    onSurface = Color.Black,
-    */
+    primary = primaryColor,
+    primaryVariant = primaryColorVariant,
+    secondary = secondaryColor
 )
 
 @Composable
-fun MyTheme(darkTheme: Boolean = isSystemInDarkTheme(), content: @Composable() () -> Unit) {
-    val colors = if (darkTheme) {
-        DarkColorPalette
-    } else {
-        LightColorPalette
-    }
+fun MyTheme(window: Window, statusBarColor: Int, content: @Composable () -> Unit) {
+    window.statusBarColor = statusBarColor
+
+    @Suppress("DEPRECATION")
+    window.decorView.systemUiVisibility = window.decorView.systemUiVisibility or
+            View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR
 
     MaterialTheme(
-        colors = colors,
+        colors = LightColorPalette,
         typography = typography,
         shapes = shapes,
         content = content
