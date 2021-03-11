@@ -70,6 +70,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.core.content.res.ResourcesCompat
 import com.example.androiddevchallenge.ui.theme.MyTheme
 import com.example.androiddevchallenge.ui.theme.backgroundColor
 import com.example.androiddevchallenge.ui.theme.backgroundFillerColor
@@ -144,7 +145,7 @@ class MainActivity : AppCompatActivity() {
 @SuppressLint("NewApi")
 @Composable
 fun MyApp() {
-    customTypeface = LocalContext.current.resources.getFont(R.font.roboto_black)
+    customTypeface = ResourcesCompat.getFont(LocalContext.current, R.font.roboto_black)!!
 
     Surface(modifier = Modifier.background(Color.Transparent)) {
 
